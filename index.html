@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>世足賽預測表</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: rgba(255,255,255,.06);
+      --line: rgba(255,255,255,.12);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #60a5fa;
+      --good: #34d399;
+      --warn: #fbbf24;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC",sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0%, var(--bg) 55%);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 40px 18px 56px; }
+    .hero {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      margin-bottom: 22px;
+    }
+    h1 { margin: 0 0 10px; font-size: clamp(30px, 5vw, 48px); }
+    .sub { color: var(--muted); margin: 0; max-width: 72ch; }
+    .pillrow { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+    .pill {
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 8px 12px; border-radius: 999px;
+      background: rgba(96,165,250,.12); color: #dbeafe;
+      border: 1px solid rgba(96,165,250,.28); font-size: 14px;
+    }
+    .table-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+    table { width:100%; border-collapse: collapse; }
+    thead th {
+      text-align:left; font-size:14px; letter-spacing:.02em;
+      color:#bfdbfe; background: rgba(96,165,250,.12);
+      padding: 16px 14px; border-bottom: 1px solid var(--line);
+    }
+    tbody td {
+      padding: 14px; border-bottom: 1px solid var(--line); vertical-align: top;
+    }
+    tbody tr:hover { background: rgba(255,255,255,.04); }
+    .date { white-space: nowrap; color: #fde68a; font-weight: 700; }
+    .group { color: #93c5fd; font-weight: 700; }
+    .match { font-weight: 700; font-size: 16px; }
+    .pred { color: #d1fae5; font-weight: 700; }
+    .note { color: var(--muted); font-size: 14px; }
+    .footer {
+      margin-top: 18px; color: var(--muted); font-size: 14px;
+      display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px;
+    }
+    .tag { color: var(--good); font-weight: 700; }
+    @media (max-width: 760px) {
+      table, thead, tbody, th, td, tr { display:block; }
+      thead { display:none; }
+      tbody tr { padding: 14px 14px 10px; }
+      tbody td { padding: 6px 0; border-bottom: none; }
+      tbody tr + tr { border-top: 1px solid var(--line); }
+      tbody td::before {
+        content: attr(data-label) '：';
+        display:block; color: var(--muted); font-size: 12px; margin-bottom: 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>世足賽預測表</h1>
+      <p class="sub">依照你剛剛那張賽程截圖整理成可直接分享的預測頁。這版是中文隊名、比分版，方便你直接丟 Discord / LINE / 朋友群。</p>
+      <div class="pillrow">
+        <span class="pill">⚽ 娛樂性預測</span>
+        <span class="pill">🕒 台灣時間</span>
+        <span class="pill">🌍 2026 世足賽程</span>
+        <span class="pill">📌 中文隊名版</span>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>日期</th>
+            <th>組別</th>
+            <th>對戰</th>
+            <th>預測比分</th>
+            <th>簡短判斷</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="date" data-label="日期">6/23（二）08:00</td>
+            <td class="group" data-label="組別">I組</td>
+            <td class="match" data-label="對戰">挪威 vs 塞內加爾</td>
+            <td class="pred" data-label="預測比分">1-1</td>
+            <td class="note" data-label="簡短判斷">和局機率高，挪威略有主動權。</td>
+          </tr>
+          <tr>
+            <td class="date" data-label="日期">6/23（二）11:00</td>
+            <td class="group" data-label="組別">J組</td>
+            <td class="match" data-label="對戰">約旦 vs 阿爾及利亞</td>
+            <td class="pred" data-label="預測比分">0-2</td>
+            <td class="note" data-label="簡短判斷">阿爾及利亞整體實力較穩。</td>
+          </tr>
+          <tr>
+            <td class="date" data-label="日期">6/24（三）01:00</td>
+            <td class="group" data-label="組別">K組</td>
+            <td class="match" data-label="對戰">葡萄牙 vs 烏茲別克</td>
+            <td class="pred" data-label="預測比分">3-0</td>
+            <td class="note" data-label="簡短判斷">葡萄牙火力優勢明顯。</td>
+          </tr>
+          <tr>
+            <td class="date" data-label="日期">6/24（三）04:00</td>
+            <td class="group" data-label="組別">L組</td>
+            <td class="match" data-label="對戰">英格蘭 vs 迦納</td>
+            <td class="pred" data-label="預測比分">2-0</td>
+            <td class="note" data-label="簡短判斷">英格蘭較穩，預期掌握節奏。</td>
+          </tr>
+          <tr>
+            <td class="date" data-label="日期">6/24（三）07:00</td>
+            <td class="group" data-label="組別">L組</td>
+            <td class="match" data-label="對戰">巴拿馬 vs 克羅埃西亞</td>
+            <td class="pred" data-label="預測比分">0-2</td>
+            <td class="note" data-label="簡短判斷">克羅埃西亞整體經驗占優。</td>
+          </tr>
+          <tr>
+            <td class="date" data-label="日期">6/24（三）10:00</td>
+            <td class="group" data-label="組別">K組</td>
+            <td class="match" data-label="對戰">哥倫比亞 vs 剛果（金）</td>
+            <td class="pred" data-label="預測比分">2-0</td>
+            <td class="note" data-label="簡短判斷">哥倫比亞較有進攻把握。</td>
+          </tr>
+          <tr>
+            <td class="date" data-label="日期">6/25（四）03:00</td>
+            <td class="group" data-label="組別">B組</td>
+            <td class="match" data-label="對戰">波士尼亞與赫塞哥維納 vs 卡達</td>
+            <td class="pred" data-label="預測比分">1-1</td>
+            <td class="note" data-label="簡短判斷">卡位戰，偏向僵持。</td>
+          </tr>
+          <tr>
+            <td class="date" data-label="日期">6/25（四）03:00</td>
+            <td class="group" data-label="組別">B組</td>
+            <td class="match" data-label="對戰">瑞士 vs 加拿大</td>
+            <td class="pred" data-label="預測比分">2-1</td>
+            <td class="note" data-label="簡短判斷">瑞士穩定度較高。</td>
+          </tr>
+          <tr>
+            <td class="date" data-label="日期">6/25（四）06:00</td>
+            <td class="group" data-label="組別">C組</td>
+            <td class="match" data-label="對戰">摩洛哥 vs 海地</td>
+            <td class="pred" data-label="預測比分">2-0</td>
+            <td class="note" data-label="簡短判斷">摩洛哥整體壓制力較強。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="footer">
+      <div>最後更新：<span class="tag">2026-06-23</span></div>
+      <div>如果你要，我也可以再加上「勝平負」或「更像手機 App 的卡片版」</div>
+    </div>
+  </div>
+</body>
+</html>
