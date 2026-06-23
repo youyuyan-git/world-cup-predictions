@@ -16,7 +16,7 @@
     .hero{background:linear-gradient(135deg,#fff 0%,#f8fbff 100%);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px 18px 16px;margin-bottom:14px;}
     .toprow{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;}
     h1{margin:0;font-size:clamp(24px,4.5vw,36px);line-height:1.05;}
-    .sub{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.6;max-width:78ch;}
+    .sub{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.65;max-width:78ch;}
     .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
     .pill{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;background:var(--blue2);color:var(--blue);font-size:12px;font-weight:700;border:1px solid rgba(24,95,165,.12)}
     .mini{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px;}
@@ -35,7 +35,6 @@
     .grid-2{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}
     .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
     .grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-    .row{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
     .stat{padding:12px;border-radius:14px;background:#f7fafc;border:1px solid var(--line)}
     .stat .n{font-size:18px;font-weight:800;line-height:1;color:#111827}
     .stat .t{font-size:11px;color:var(--muted);margin-top:4px}
@@ -45,9 +44,6 @@
     .team{font-size:12px;padding:2px 0;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
     .badge{display:inline-flex;align-items:center;justify-content:center;padding:1px 6px;border-radius:5px;font-size:9px;font-weight:800;line-height:1.4}
     .badge.host{background:#dbeafe;color:#1d4ed8}
-    .badge.ok{background:#f0fdf4;color:var(--green)}
-    .badge.warn{background:#fffbeb;color:#b45309}
-    .badge.bad{background:#fef2f2;color:var(--red)}
     .match-card{background:#fff;border:1px solid #e7ebf0;border-radius:14px;padding:11px 12px;margin-bottom:10px;}
     .match-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;flex-wrap:wrap}
     .match-time{font-size:11px;color:#8b95a7;margin-bottom:4px}
@@ -92,250 +88,212 @@
       <div class="toprow">
         <div>
           <h1>2026 世界盃 · 預測戰績</h1>
-          <p class="sub">這版改成你喜歡的「儀表板＋卡片」形式：上面看總覽，中間看分組與賽程，下面看戰績對照與淘汰賽。內容也會盡量寫得比較滿，方便你直接貼給朋友或丟到手機看。</p>
+          <p class="sub">這版不是行程表，是你要的<strong>預測表</strong>。我把它做成「戰績對照 + 新預測」的 tracker 形式，內容會比一般賽程頁更密、更完整，也更適合你直接分享給朋友看。</p>
         </div>
         <div class="pillrow" style="margin-top:0">
           <span class="pill">⚽ 娛樂性預測</span>
           <span class="pill">🕒 台灣時間 UTC+8</span>
-          <span class="pill">📊 依賠率＋基本面</span>
+          <span class="pill">📊 賠率＋基本面</span>
           <span class="pill">📱 手機友善</span>
         </div>
       </div>
 
       <div class="mini">
-        <div class="box"><div class="num">48</div><div class="lbl">參賽隊伍</div></div>
-        <div class="box"><div class="num">104</div><div class="lbl">總場次</div></div>
-        <div class="box"><div class="num">12</div><div class="lbl">分組</div></div>
-        <div class="box"><div class="num">39</div><div class="lbl">比賽天數</div></div>
+        <div class="box"><div class="num" id="nDone">40</div><div class="lbl">已完賽 / 已整理</div></div>
+        <div class="box"><div class="num" id="nExact">3</div><div class="lbl">完全命中</div></div>
+        <div class="box"><div class="num" id="nPartial">23</div><div class="lbl">部分命中</div></div>
+        <div class="box"><div class="num" id="nMiss">14</div><div class="lbl">落空</div></div>
       </div>
     </div>
 
     <div class="tabs" id="tabs">
-      <button class="tab active" data-tab="overview">概覽</button>
-      <button class="tab" data-tab="groups">分組</button>
-      <button class="tab" data-tab="results">戰績對照</button>
-      <button class="tab" data-tab="schedule">小組賽程</button>
-      <button class="tab" data-tab="knockout">淘汰賽</button>
+      <button class="tab active" data-tab="tracked">戰績對照</button>
+      <button class="tab" data-tab="upcoming">新預測（MD2剩餘 + MD3）</button>
     </div>
 
-    <section class="section active" id="overview">
+    <section class="section active" id="tracked">
       <div class="panel soft">
-        <div class="section-title">賽事摘要</div>
+        <div class="section-title">戰績對照摘要</div>
         <div class="info">
-          這份表把你目前最常看的幾個重點合在一起：<br>
-          1. <strong>分組圖</strong>：一眼看每組有哪些隊伍與地主國。<br>
-          2. <strong>戰績對照</strong>：已完賽項目看「實際結果 vs 賽前預測」。<br>
-          3. <strong>小組賽程</strong>：可過濾到單一分組、單一輪次。<br>
-          4. <strong>淘汰賽</strong>：把最終輪、32 強、16 強一路排開。<br>
-          這種版型適合直接丟 Discord、LINE，手機上也比較好滑。
+          目前這份表裡我整理了 40 場已完賽/已確認的對照結果：<br>
+          <strong style="color:#111827">3 場完全命中</strong>、<strong style="color:#111827">23 場部分命中</strong>、<strong style="color:#111827">14 場落空</strong>。<br>
+          這類頁面的重點不是只看猜對沒，而是看「方向、比分規模、是否抓到對攻或低比分」三件事。
         </div>
         <div class="grid-2">
           <div>
-            <div class="section-title">關鍵日程</div>
-            <div class="match-card"><div class="match-team">6/12（五）03:00 · 開幕戰</div><div class="note">墨西哥 vs 南非，地主氣勢和高原優勢是整屆的起手式。</div></div>
-            <div class="match-card"><div class="match-team">6/25–7/1 · 小組賽最終輪</div><div class="note">同組同時開踢，最容易出現平局、搶分、刷得失球差。</div></div>
-            <div class="match-card"><div class="match-team">6/28–7/4 · 32 強淘汰賽</div><div class="note">前 2 名 + 最佳第 3 名進入，節奏會很快。</div></div>
+            <div class="section-title">本屆已驗證的幾個規律</div>
+            <div class="info">
+              1. <strong style="color:#111827">熱門隊伍不一定大勝</strong>：像葡萄牙、摩洛哥、比利時都出現過被拖慢節奏的情況。<br>
+              2. <strong style="color:#111827">補時球很多</strong>：卡達、迦納、象牙海岸、烏拉圭都有補時改變劇本。<br>
+              3. <strong style="color:#111827">比分常比模型更大</strong>：德國 7-1、加拿大 6-0、瑞典 5-1 這種場次，低估很常見。<br>
+              4. <strong style="color:#111827">MD3 會變複雜</strong>：有些隊已晉級，只是要不要刷分；有些則是非贏不可。
+            </div>
           </div>
           <div>
-            <div class="section-title">目前觀察</div>
+            <div class="section-title">這頁怎麼看</div>
             <div class="info">
-              <strong style="color:#111827">強隊不一定穩贏</strong><br>
-              德國 7-1、瑞典 5-1、加拿大 6-0 這種大比分，會把預測模型的保守值直接打穿。<br><br>
-              <strong style="color:#111827">補時球很多</strong><br>
-              卡達、迦納、象牙海岸都出現過補時改變結果的場次，這種比賽很難只靠名氣判斷。<br><br>
-              <strong style="color:#111827">最重要的是分組盤勢</strong><br>
-              一旦到了 MD3，很多場不是單純比實力，而是看「平局夠不夠、要不要刷分」。
+              每張卡都有四個核心資訊：<br>
+              <strong style="color:#111827">時間 / 組別</strong>：方便快速對場次。<br>
+              <strong style="color:#111827">實際比分</strong> vs <strong style="color:#111827">賽前預測</strong>：看命中程度。<br>
+              <strong style="color:#111827">命中狀態</strong>：完全命中 / 部分命中 / 落空。<br>
+              <strong style="color:#111827">補充說明</strong>：用一句到兩句把比賽關鍵寫清楚。
             </div>
           </div>
         </div>
       </div>
+      <div id="trackedList"></div>
+    </section>
 
+    <section class="section" id="upcoming">
       <div class="panel">
-        <div class="section-title">快速總覽</div>
-        <div class="grid-4">
-          <div class="stat"><div class="n">3</div><div class="t">完全命中</div></div>
-          <div class="stat"><div class="n">23</div><div class="t">部分命中</div></div>
-          <div class="stat"><div class="n">14</div><div class="t">落空</div></div>
-          <div class="stat"><div class="n">40</div><div class="t">已完賽統計</div></div>
+        <div class="section-title">方法論</div>
+        <div class="info">
+          這份新預測是用「<strong style="color:#111827">賠率機率 + 基本面 + MD1/MD2 狀態</strong>」去挑最高機率結果。<br>
+          我會優先看誰是賠率上的熱門，再用是否需要搶分、是否容易打開比分、是否有明顯傷兵/狀態問題去修正比分。<br>
+          所以你會看到有些場我押得很穩，但比分會比單純看勝負更細。
         </div>
+        <div class="section-title">新預測卡</div>
+        <div id="upcomingList"></div>
       </div>
     </section>
 
-    <section class="section" id="groups">
-      <div class="panel">
-        <div class="section-title">分組一覽</div>
-        <div class="grid-3">
-          <div class="group-card"><div class="group-title">Group A</div><div class="team">墨西哥 🇲🇽 <span class="badge host">主</span></div><div class="team">南非 🇿🇦</div><div class="team">南韓 🇰🇷</div><div class="team">捷克 🇨🇿</div></div>
-          <div class="group-card"><div class="group-title">Group B</div><div class="team">加拿大 🇨🇦 <span class="badge host">主</span></div><div class="team">波赫 🇧🇦</div><div class="team">卡達 🇶🇦</div><div class="team">瑞士 🇨🇭</div></div>
-          <div class="group-card"><div class="group-title">Group C</div><div class="team">巴西 🇧🇷</div><div class="team">摩洛哥 🇲🇦</div><div class="team">海地 🇭🇹</div><div class="team">蘇格蘭 🏴</div></div>
-          <div class="group-card"><div class="group-title">Group D</div><div class="team">美國 🇺🇸 <span class="badge host">主</span></div><div class="team">巴拉圭 🇵🇾</div><div class="team">澳洲 🇦🇺</div><div class="team">土耳其 🇹🇷</div></div>
-          <div class="group-card"><div class="group-title">Group E</div><div class="team">德國 🇩🇪</div><div class="team">庫拉索 🇨🇼</div><div class="team">象牙海岸 🇨🇮</div><div class="team">厄瓜多 🇪🇨</div></div>
-          <div class="group-card"><div class="group-title">Group F</div><div class="team">荷蘭 🇳🇱</div><div class="team">日本 🇯🇵</div><div class="team">瑞典 🇸🇪</div><div class="team">突尼西亞 🇹🇳</div></div>
-          <div class="group-card"><div class="group-title">Group G</div><div class="team">比利時 🇧🇪</div><div class="team">埃及 🇪🇬</div><div class="team">伊朗 🇮🇷</div><div class="team">紐西蘭 🇳🇿</div></div>
-          <div class="group-card"><div class="group-title">Group H</div><div class="team">西班牙 🇪🇸</div><div class="team">維德角 🇨🇻</div><div class="team">沙烏地阿拉伯 🇸🇦</div><div class="team">烏拉圭 🇺🇾</div></div>
-          <div class="group-card"><div class="group-title">Group I</div><div class="team">法國 🇫🇷</div><div class="team">塞內加爾 🇸🇳</div><div class="team">伊拉克 🇮🇶</div><div class="team">挪威 🇳🇴</div></div>
-          <div class="group-card"><div class="group-title">Group J</div><div class="team">阿根廷 🇦🇷</div><div class="team">阿爾及利亞 🇩🇿</div><div class="team">奧地利 🇦🇹</div><div class="team">約旦 🇯🇴</div></div>
-          <div class="group-card"><div class="group-title">Group K</div><div class="team">葡萄牙 🇵🇹</div><div class="team">剛果(金) 🇨🇩</div><div class="team">烏茲別克 🇺🇿</div><div class="team">哥倫比亞 🇨🇴</div></div>
-          <div class="group-card"><div class="group-title">Group L</div><div class="team">英格蘭 🏴</div><div class="team">克羅埃西亞 🇭🇷</div><div class="team">迦納 🇬🇭</div><div class="team">巴拿馬 🇵🇦</div></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="results">
-      <div class="panel">
-        <div class="section-title">戰績對照</div>
-        <div class="info">這邊放的是你前面已經看過、而且有實際結果的幾場重點比賽。卡片會同時顯示「實際比分 / 賽前預測 / 命中狀態 / 補充說明」。</div>
-        <div class="match-card"><div class="match-time">6/23（二）08:00 · I組</div><div class="match-top"><div><div class="match-team">挪威 vs 塞內加爾</div><div class="small">預測：1–1</div></div><div class="match-meta"><span class="score exact">✓ 部分命中</span></div></div><div class="scoreline"><span class="score exact">實際 2 – 2</span><span class="score">預測 1 – 1</span></div><div class="note">方向抓到「會打開」，但兩邊都比想像中更敢攻。這類場次很適合改成「雙方進球」型的分析。</div></div>
-        <div class="match-card"><div class="match-time">6/23（二）11:00 · J組</div><div class="match-top"><div><div class="match-team">約旦 vs 阿爾及利亞</div><div class="small">預測：0–2</div></div><div class="match-meta"><span class="score exact">✓ 命中方向</span></div></div><div class="scoreline"><span class="score partial">實際 0 – 2</span><span class="score">預測 0 – 2</span></div><div class="note">阿爾及利亞的防守與轉換速度穩定，這種低風險場就很適合走客勝。</div></div>
-        <div class="match-card"><div class="match-time">6/24（三）01:00 · K組</div><div class="match-top"><div><div class="match-team">葡萄牙 vs 烏茲別克</div><div class="small">預測：3–0</div></div><div class="match-meta"><span class="score miss">✗ 落空</span></div></div><div class="scoreline"><span class="score miss">實際 1 – 1</span><span class="score">預測 3 – 0</span></div><div class="note">葡萄牙被逼成平局，屬於熱門隊伍被對手守到沒脾氣的典型案例。</div></div>
-        <div class="match-card"><div class="match-time">6/24（三）04:00 · L組</div><div class="match-top"><div><div class="match-team">英格蘭 vs 迦納</div><div class="small">預測：2–0</div></div><div class="match-meta"><span class="score partial">△ 部分命中</span></div></div><div class="scoreline"><span class="score partial">實際 4 – 2</span><span class="score">預測 2 – 0</span></div><div class="note">英格蘭贏面抓對，但低估了對攻節奏。這種比賽比分常常比模型預估更大。</div></div>
-        <div class="match-card"><div class="match-time">6/25（四）03:00 · B組</div><div class="match-top"><div><div class="match-team">波士尼亞與赫塞哥維納 vs 卡達</div><div class="small">預測：1–1</div></div><div class="match-meta"><span class="score exact">✓ 命中方向</span></div></div><div class="scoreline"><span class="score exact">實際 1 – 1</span><span class="score">預測 1 – 1</span></div><div class="note">這種五五波盤，通常比分會卡在 1 球附近，平局是最安全的型態。</div></div>
-        <div class="match-card"><div class="match-time">6/25（四）06:00 · C組</div><div class="match-top"><div><div class="match-team">摩洛哥 vs 海地</div><div class="small">預測：2–0</div></div><div class="match-meta"><span class="score partial">△ 部分命中</span></div></div><div class="scoreline"><span class="score partial">實際 0 – 1</span><span class="score">預測 2 – 0</span></div><div class="note">這場是提醒：即便是看似強勢的一方，也可能被早早打亂節奏。</div></div>
-      </div>
-    </section>
-
-    <section class="section" id="schedule">
-      <div class="panel">
-        <div class="section-title">賽程表</div>
-        <div class="filterbar" id="gFilters"></div>
-        <div class="filterbar" id="mdFilters"></div>
-        <div class="small" style="margin-bottom:10px">橘色左線＝最終輪同時開踢；右側標示的是預測比分。</div>
-        <div id="scheduleList"></div>
-      </div>
-    </section>
-
-    <section class="section" id="knockout">
-      <div class="panel">
-        <div class="section-title">淘汰賽</div>
-        <div class="info">32 強開始就是單場定勝負，這裡把大輪次先排好，方便你看整體節奏。</div>
-        <div class="kn-row"><div><div class="kn-round">32強淘汰賽</div><div class="kn-note">16場，前 2 名 + 最佳第 3 名晉級</div></div><div><div class="kn-date">6/28（日）– 7/4（六）</div></div></div>
-        <div class="kn-row"><div><div class="kn-round">16強</div><div class="kn-note">8場</div></div><div><div class="kn-date">7/5（日）– 7/8（三）</div></div></div>
-        <div class="kn-row"><div><div class="kn-round">8強</div><div class="kn-note">4場</div></div><div><div class="kn-date">7/10（五）– 7/12（日）</div></div></div>
-        <div class="kn-row"><div><div class="kn-round">4強半決賽</div><div class="kn-note">2場</div></div><div><div class="kn-date">7/15（三）、7/16（四）</div></div></div>
-        <div class="kn-row"><div><div class="kn-round">季軍賽</div><div class="kn-note"></div></div><div><div class="kn-date">7/19（日）</div></div></div>
-        <div class="kn-row" style="background:#fffbeb;border-radius:10px;padding:10px 8px;"><div><div class="kn-round">決賽 🏆</div><div class="kn-note">MetLife Stadium，紐澤西</div></div><div><div class="kn-date">7/20（日）清晨 03:00</div></div></div>
-      </div>
-    </section>
-
-    <div class="footer">賽程為台灣時間 UTC+8 ｜ 預測為娛樂用途，非投注建議</div>
+    <div class="footer">勝率來源：Kalshi、bet365、FanDuel、各大博彩公司綜合｜僅供參考</div>
   </div>
 
   <script>
-    const schedule = [
-      { md: 1, g: 'A', final: false, t: '6/12（五）03:00', m: '墨西哥 vs 南非', v: '墨西哥城', score: '2-0', pred: '2-0', hit: 'exact' },
-      { md: 1, g: 'B', final: false, t: '6/12（五）06:00', m: '加拿大 vs 波赫', v: '多倫多', score: '1-1', pred: '1-0', hit: 'partial' },
-      { md: 1, g: 'C', final: false, t: '6/13（六）00:00', m: '巴西 vs 摩洛哥', v: '達拉斯', score: '1-1', pred: '2-1', hit: 'miss' },
-      { md: 1, g: 'A', final: false, t: '6/13（六）03:00', m: '南韓 vs 捷克', v: '洛杉磯', score: '2-1', pred: '1-1', hit: 'partial' },
-      { md: 1, g: 'B', final: false, t: '6/13（六）06:00', m: '卡達 vs 瑞士', v: '紐約', score: '1-1', pred: '0-2', hit: 'miss' },
-      { md: 1, g: 'D', final: false, t: '6/13（六）09:00', m: '美國 vs 巴拉圭', v: '洛杉磯', score: '4-1', pred: '1-0', hit: 'miss' },
-      { md: 1, g: 'C', final: false, t: '6/14（日）00:00', m: '海地 vs 蘇格蘭', v: '休士頓', score: '0-1', pred: '0-2', hit: 'partial' },
-      { md: 1, g: 'E', final: false, t: '6/14（日）03:00', m: '德國 vs 庫拉索', v: '紐約', score: '7-1', pred: '4-0', hit: 'partial' },
-      { md: 1, g: 'D', final: false, t: '6/14（日）06:00', m: '澳洲 vs 土耳其', v: '舊金山', score: '2-0', pred: '1-3', hit: 'miss' },
-      { md: 1, g: 'F', final: false, t: '6/14（日）09:00', m: '荷蘭 vs 日本', v: '舊金山', score: '2-2', pred: '2-1', hit: 'partial' },
-      { md: 1, g: 'G', final: false, t: '6/15（一）00:00', m: '比利時 vs 埃及', v: '費城', score: '1-1', pred: '2-0', hit: 'miss' },
-      { md: 1, g: 'E', final: false, t: '6/15（一）03:00', m: '象牙海岸 vs 厄瓜多', v: '邁阿密', score: '1-0', pred: '1-1', hit: 'partial' },
-      { md: 1, g: 'H', final: false, t: '6/15（一）06:00', m: '西班牙 vs 維德角', v: '洛杉磯', score: '0-0', pred: '4-0', hit: 'miss' },
-      { md: 1, g: 'F', final: false, t: '6/15（一）09:00', m: '瑞典 vs 突尼西亞', v: '達拉斯', score: '5-1', pred: '1-0', hit: 'partial' },
-      { md: 1, g: 'H', final: false, t: '6/16（二）06:00', m: '沙烏地阿拉伯 vs 烏拉圭', v: '達拉斯', score: '1-1', pred: '0-2', hit: 'miss' },
-      { md: 1, g: 'K', final: false, t: '6/17（三）00:00', m: '葡萄牙 vs 剛果(金)', v: '波士頓', score: '1-1', pred: '3-0', hit: 'miss' },
-      { md: 1, g: 'L', final: false, t: '6/17（三）06:00', m: '英格蘭 vs 克羅埃西亞', v: '紐約', score: '4-2', pred: '2-1', hit: 'partial' },
-      { md: 1, g: 'L', final: false, t: '6/18（四）06:00', m: '迦納 vs 巴拿馬', v: '費城', score: '1-0', pred: '1-1', hit: 'partial' },
-      { md: 1, g: 'K', final: false, t: '6/18（四）00:00', m: '烏茲別克 vs 哥倫比亞', v: '亞特蘭大', score: '1-3', pred: '0-2', hit: 'partial' },
-      { md: 2, g: 'B', final: false, t: '6/19（五）00:00', m: '加拿大 vs 卡達', v: '多倫多', pred: '2-0' },
-      { md: 2, g: 'A', final: false, t: '6/19（五）03:00', m: '墨西哥 vs 南韓', v: '洛杉磯', pred: '1-1' },
-      { md: 2, g: 'A', final: false, t: '6/19（五）06:00', m: '南非 vs 捷克', v: '舊金山', pred: '1-0' },
-      { md: 2, g: 'B', final: false, t: '6/20（六）00:00', m: '波赫 vs 瑞士', v: '紐約', pred: '1-2' },
-      { md: 2, g: 'C', final: false, t: '6/20（六）03:00', m: '巴西 vs 海地', v: '邁阿密', pred: '4-0' },
-      { md: 2, g: 'C', final: false, t: '6/20（六）06:00', m: '摩洛哥 vs 蘇格蘭', v: '達拉斯', pred: '0-1' },
-      { md: 2, g: 'D', final: false, t: '6/21（日）00:00', m: '美國 vs 澳洲', v: '費城', pred: '2-0' },
-      { md: 2, g: 'D', final: false, t: '6/21（日）03:00', m: '巴拉圭 vs 土耳其', v: '達拉斯', pred: '2-1' },
-      { md: 2, g: 'E', final: false, t: '6/21（日）06:00', m: '德國 vs 象牙海岸', v: '洛杉磯', pred: '3-1' },
-      { md: 2, g: 'F', final: false, t: '6/22（一）00:00', m: '荷蘭 vs 瑞典', v: '達拉斯', pred: '2-1' },
-      { md: 2, g: 'E', final: false, t: '6/22（一）03:00', m: '庫拉索 vs 厄瓜多', v: '休士頓', pred: '1-3' },
-      { md: 2, g: 'F', final: false, t: '6/22（一）06:00', m: '日本 vs 突尼西亞', v: '洛杉磯', pred: '2-0' },
-      { md: 2, g: 'G', final: false, t: '6/23（二）00:00', m: '比利時 vs 伊朗', v: '紐約', pred: '2-1' },
-      { md: 2, g: 'G', final: false, t: '6/23（二）03:00', m: '埃及 vs 紐西蘭', v: '波士頓', pred: '1-2' },
-      { md: 2, g: 'H', final: false, t: '6/23（二）06:00', m: '西班牙 vs 沙烏地阿拉伯', v: '邁阿密', pred: '3-0' },
-      { md: 2, g: 'I', final: false, t: '6/24（三）00:00', m: '法國 vs 伊拉克', v: '舊金山', pred: '3-0' },
-      { md: 2, g: 'I', final: false, t: '6/24（三）03:00', m: '塞內加爾 vs 挪威', v: '洛杉磯', pred: '1-2' },
-      { md: 2, g: 'H', final: false, t: '6/24（三）06:00', m: '維德角 vs 烏拉圭', v: '西雅圖', pred: '0-2' },
-      { md: 2, g: 'J', final: false, t: '6/25（四）00:00', m: '阿根廷 vs 奧地利', v: '達拉斯', pred: '2-1' },
-      { md: 2, g: 'J', final: false, t: '6/25（四）03:00', m: '阿爾及利亞 vs 約旦', v: '費城', pred: '0-2' },
-      { md: 2, g: 'K', final: false, t: '6/25（四）06:00', m: '葡萄牙 vs 烏茲別克', v: '紐約', pred: '3-1' },
-      { md: 2, g: 'L', final: false, t: '6/26（五）00:00', m: '英格蘭 vs 迦納', v: '休士頓', pred: '2-1' },
-      { md: 2, g: 'L', final: false, t: '6/26（五）03:00', m: '克羅埃西亞 vs 巴拿馬', v: '紐約', pred: '1-2' },
-      { md: 2, g: 'K', final: false, t: '6/26（五）06:00', m: '剛果(金) vs 哥倫比亞', v: '亞特蘭大', pred: '0-2' },
-      { md: 3, g: 'B', final: true, t: '6/26（五）04:00', m: '加拿大 vs 瑞士', v: '多倫多' },
-      { md: 3, g: 'B', final: true, t: '6/26（五）04:00', m: '波赫 vs 卡達', v: '紐約' },
-      { md: 3, g: 'A', final: true, t: '6/26（五）07:00', m: '墨西哥 vs 捷克', v: '墨西哥城' },
-      { md: 3, g: 'A', final: true, t: '6/26（五）07:00', m: '南韓 vs 南非', v: '洛杉磯' },
-      { md: 3, g: 'C', final: true, t: '6/27（六）04:00', m: '巴西 vs 蘇格蘭', v: '達拉斯' },
-      { md: 3, g: 'C', final: true, t: '6/27（六）04:00', m: '摩洛哥 vs 海地', v: '休士頓' },
-      { md: 3, g: 'D', final: true, t: '6/27（六）07:00', m: '美國 vs 土耳其', v: '紐約' },
-      { md: 3, g: 'D', final: true, t: '6/27（六）07:00', m: '澳洲 vs 巴拉圭', v: '洛杉磯' },
-      { md: 3, g: 'E', final: true, t: '6/28（日）04:00', m: '德國 vs 厄瓜多', v: '洛杉磯' },
-      { md: 3, g: 'E', final: true, t: '6/28（日）04:00', m: '象牙海岸 vs 庫拉索', v: '邁阿密' },
-      { md: 3, g: 'F', final: true, t: '6/28（日）07:00', m: '荷蘭 vs 突尼西亞', v: '舊金山' },
-      { md: 3, g: 'F', final: true, t: '6/28（日）07:00', m: '瑞典 vs 日本', v: '達拉斯' },
-      { md: 3, g: 'G', final: true, t: '6/29（一）04:00', m: '比利時 vs 紐西蘭', v: '費城' },
-      { md: 3, g: 'G', final: true, t: '6/29（一）04:00', m: '埃及 vs 伊朗', v: '紐約' },
-      { md: 3, g: 'H', final: true, t: '6/29（一）07:00', m: '西班牙 vs 烏拉圭', v: '洛杉磯' },
-      { md: 3, g: 'H', final: true, t: '6/29（一）07:00', m: '維德角 vs 沙烏地阿拉伯', v: '達拉斯' },
-      { md: 3, g: 'I', final: true, t: '6/30（二）04:00', m: '法國 vs 挪威', v: '紐約' },
-      { md: 3, g: 'I', final: true, t: '6/30（二）04:00', m: '塞內加爾 vs 伊拉克', v: '休士頓' },
-      { md: 3, g: 'J', final: true, t: '6/30（二）07:00', m: '阿根廷 vs 約旦', v: '達拉斯' },
-      { md: 3, g: 'J', final: true, t: '6/30（二）07:00', m: '奧地利 vs 阿爾及利亞', v: '費城' },
-      { md: 3, g: 'K', final: true, t: '7/1（三）04:00', m: '葡萄牙 vs 哥倫比亞', v: '紐約' },
-      { md: 3, g: 'K', final: true, t: '7/1（三）04:00', m: '烏茲別克 vs 剛果(金)', v: '波士頓' },
-      { md: 3, g: 'L', final: true, t: '7/1（三）07:00', m: '英格蘭 vs 巴拿馬', v: '紐約' },
-      { md: 3, g: 'L', final: true, t: '7/1（三）07:00', m: '克羅埃西亞 vs 迦納', v: '費城' },
+    const tracked = [
+      { id:"mex_rsa", status:"done", time:"6/12（五）03:00", group:"A", home:"墨西哥 🇲🇽", away:"南非 🇿🇦", actual:"2 – 0", predicted:"2 – 0", hit:"exact", note:"完全命中！主場高原優勢 + 防守穩固，劇本完全照預測走。" },
+      { id:"kor_cze", status:"done", time:"6/13（六）03:00", group:"A", home:"南韓 🇰🇷", away:"捷克 🇨🇿", actual:"2 – 1", predicted:"1 – 1", hit:"partial", note:"方向抓到會拉開，但南韓逆轉後比分比預期更刺激。" },
+      { id:"can_bih", status:"done", time:"6/12（五）06:00", group:"B", home:"加拿大 🇨🇦", away:"波赫 🇧🇦", actual:"1 – 1", predicted:"1 – 0", hit:"partial", note:"看準加拿大主場不敗，但波赫靠定位球先拿到領先，最後被追平。" },
+      { id:"usa_pry", status:"done", time:"6/13（六）09:00", group:"D", home:"美國 🇺🇸", away:"巴拉圭 🇵🇾", actual:"4 – 1", predicted:"1 – 0", hit:"miss", note:"我低估美國火力，結果一場打成隊史級別的大爆發。" },
+      { id:"qat_sui", status:"done", time:"6/13（六）06:00", group:"B", home:"卡達 🇶🇦", away:"瑞士 🇨🇭", actual:"1 – 1", predicted:"0 – 2", hit:"miss", note:"方向錯了，瑞士壓制沒換成勝利，卡達補時扳平搶到關鍵分。" },
+      { id:"bra_mar", status:"done", time:"6/13（六）23:00", group:"C", home:"巴西 🇧🇷", away:"摩洛哥 🇲🇦", actual:"1 – 1", predicted:"2 – 1", hit:"miss", note:"開放式比賽命中，但巴西沒能逆轉。熱門隊遇到韌性很高的對手時常會卡住。" },
+      { id:"hai_sco", status:"done", time:"6/14（日）00:00", group:"C", home:"海地 🇭🇹", away:"蘇格蘭 🏴", actual:"0 – 1", predicted:"0 – 2", hit:"partial", note:"方向與贏家都對，只差一球；蘇格蘭控場但效率不高。" },
+      { id:"aus_tur", status:"done", time:"6/14（日）06:00", group:"D", home:"澳洲 🇦🇺", away:"土耳其 🇹🇷", actual:"2 – 0", predicted:"1 – 3", hit:"miss", note:"完全爆冷，原本押熱門方，結果澳洲反擊戰術大成功。" },
+      { id:"ger_cuw", status:"done", time:"6/14（日）03:00", group:"E", home:"德國 🇩🇪", away:"庫拉索 🇨🇼", actual:"7 – 1", predicted:"4 – 0", hit:"partial", note:"方向全對，但比分量級還是低估了，德國火力一開就停不下來。" },
+      { id:"ned_jpn", status:"done", time:"6/14（日）09:00", group:"F", home:"荷蘭 🇳🇱", away:"日本 🇯🇵", actual:"2 – 2", predicted:"2 – 1", hit:"partial", note:"雙方都進球、對攻節奏全中，只是收尾變成平局。" },
+      { id:"civ_ecu", status:"done", time:"6/15（一）00:00", group:"E", home:"象牙海岸 🇨🇮", away:"厄瓜多 🇪🇨", actual:"1 – 0", predicted:"1 – 1", hit:"partial", note:"拉鋸戰有抓到，但補時絕殺把平局改成單方面勝利。" },
+      { id:"swe_tun", status:"done", time:"6/15（一）03:00", group:"F", home:"瑞典 🇸🇪", away:"突尼西亞 🇹🇳", actual:"5 – 1", predicted:"1 – 0", hit:"partial", note:"方向對，但瑞典火力爆發程度超過預期很多。" },
+      { id:"esp_cpv", status:"done", time:"6/15（一）17:00", group:"H", home:"西班牙 🇪🇸", away:"維德角 🇨🇻", actual:"0 – 0", predicted:"4 – 0", hit:"miss", note:"本屆最大爆冷之一。超級熱門被防守體系完全鎖住。" },
+      { id:"bel_egy", status:"done", time:"6/15（一）20:00", group:"G", home:"比利時 🇧🇪", away:"埃及 🇪🇬", actual:"1 – 1", predicted:"2 – 0", hit:"miss", note:"比利時沒打出預期壓制力，埃及把節奏拖住了。" },
+      { id:"ksa_ury", status:"done", time:"6/16（二）06:00", group:"H", home:"沙烏地阿拉伯 🇸🇦", away:"烏拉圭 🇺🇾", actual:"1 – 1", predicted:"0 – 2", hit:"miss", note:"方向反了，烏拉圭沒把該拿的比賽拿下來。" },
+      { id:"irn_nzl", status:"done", time:"6/16（二）00:00", group:"G", home:"伊朗 🇮🇷", away:"紐西蘭 🇳🇿", actual:"2 – 2", predicted:"2 – 1", hit:"partial", note:"預測伊朗勝、雙方都有進球都中，只是紐西蘭扳平。" },
+      { id:"fra_sen", status:"done", time:"6/16（二）03:00", group:"I", home:"法國 🇫🇷", away:"塞內加爾 🇸🇳", actual:"3 – 1", predicted:"2 – 1", hit:"partial", note:"方向對、比分規模少一球，法國下半場火力拉開。" },
+      { id:"irq_nor", status:"done", time:"6/17（三）03:00", group:"I", home:"伊拉克 🇮🇶", away:"挪威 🇳🇴", actual:"1 – 4", predicted:"0 – 3", hit:"partial", note:"挪威大勝方向正確，比分接近但少抓了一球。" },
+      { id:"arg_alg", status:"done", time:"6/16（二）09:00", group:"J", home:"阿根廷 🇦🇷", away:"阿爾及利亞 🇩🇿", actual:"3 – 0", predicted:"2 – 0", hit:"partial", note:"Messi 爆發，阿根廷全面壓制，比分比我想的再大一點。" },
+      { id:"aut_jor", status:"done", time:"6/17（三）09:00", group:"J", home:"奧地利 🇦🇹", away:"約旦 🇯🇴", actual:"3 – 1", predicted:"2 – 0", hit:"partial", note:"方向對，但約旦有追回一球，整體節奏比預期開放。" },
+      { id:"por_cod", status:"done", time:"6/17（三）00:00", group:"K", home:"葡萄牙 🇵🇹", away:"剛果(金) 🇨🇩", actual:"1 – 1", predicted:"3 – 0", hit:"miss", note:"葡萄牙被防到沒脾氣，剛果金拿到超關鍵的一分。" },
+      { id:"eng_cro", status:"done", time:"6/17（三）06:00", group:"L", home:"英格蘭 🏴", away:"克羅埃西亞 🇭🇷", actual:"4 – 2", predicted:"2 – 1", hit:"partial", note:"方向對，但這場完全打開，進球比預期多很多。" },
+      { id:"gha_pan", status:"done", time:"6/18（四）06:00", group:"L", home:"迦納 🇬🇭", away:"巴拿馬 🇵🇦", actual:"1 – 0", predicted:"1 – 1", hit:"partial", note:"原本看平局，結果迦納靠補時絕殺拿下。" },
+      { id:"uzb_col", status:"done", time:"6/18（四）00:00", group:"K", home:"烏茲別克 🇺🇿", away:"哥倫比亞 🇨🇴", actual:"1 – 3", predicted:"0 – 2", hit:"partial", note:"哥倫比亞贏面抓對，但烏茲別克也踢進隊史首球。" },
+      { id:"cze_rsa", status:"done", time:"6/19（四）05:00", group:"A", home:"捷克 🇨🇿", away:"南非 🇿🇦", actual:"1 – 1", predicted:"1 – 0", hit:"miss", note:"捷克先進球但沒守住，南非補時扳平。" },
+      { id:"sui_bih", status:"done", time:"6/19（四）03:00", group:"B", home:"瑞士 🇨🇭", away:"波赫 🇧🇦", actual:"4 – 1", predicted:"2 – 0", hit:"partial", note:"方向正確，瑞士火力比預期更猛。" },
+      { id:"can_qat", status:"done", time:"6/19（四）06:00", group:"B", home:"加拿大 🇨🇦", away:"卡達 🇶🇦", actual:"6 – 0", predicted:"2 – 0", hit:"partial", note:"方向對但比分規模嚴重低估，主場直接打爆。" },
+      { id:"mex_kor", status:"done", time:"6/19（四）09:00", group:"A", home:"墨西哥 🇲🇽", away:"南韓 🇰🇷", actual:"1 – 0", predicted:"1 – 1", hit:"miss", note:"押平局結果墨西哥小勝，門將神撲保住零封。" },
+      { id:"usa_aus", status:"done", time:"6/20（五）03:00", group:"D", home:"美國 🇺🇸", away:"澳洲 🇦🇺", actual:"2 – 0", predicted:"2 – 0", hit:"exact", note:"完全命中！節奏、比分、零封全部對上。" },
+      { id:"sco_mar", status:"done", time:"6/20（五）06:00", group:"C", home:"蘇格蘭 🏴", away:"摩洛哥 🇲🇦", actual:"0 – 1", predicted:"0 – 1", hit:"exact", note:"完全命中！一球定生死，這場非常乾淨。" },
+      { id:"bra_hai", status:"done", time:"6/20（五）08:30", group:"C", home:"巴西 🇧🇷", away:"海地 🇭🇹", actual:"3 – 0", predicted:"4 – 0", hit:"partial", note:"方向對、比分接近，只是差一球。" },
+      { id:"tur_pry", status:"done", time:"6/20（五）11:00", group:"D", home:"土耳其 🇹🇷", away:"巴拉圭 🇵🇾", actual:"0 – 1", predicted:"2 – 1", hit:"miss", note:"熱門方失準，巴拉圭逆冷搶下關鍵勝利。" },
+      { id:"ger_civ", status:"done", time:"6/21（日）06:00", group:"E", home:"德國 🇩🇪", away:"象牙海岸 🇨🇮", actual:"2 – 1", predicted:"3 – 1", hit:"partial", note:"方向對，比分少一球，德國靠後段逆轉拿下。" },
+      { id:"cuw_ecu", status:"done", time:"6/22（一）03:00", group:"E", home:"庫拉索 🇨🇼", away:"厄瓜多 🇪🇨", actual:"0 – 0", predicted:"1 – 3", hit:"miss", note:"厄瓜多大熱門卻沒能破門，變成悶平。" },
+      { id:"ned_swe", status:"done", time:"6/22（一）00:00", group:"F", home:"荷蘭 🇳🇱", away:"瑞典 🇸🇪", actual:"5 – 1", predicted:"2 – 1", hit:"partial", note:"方向對，但荷蘭火力爆炸，比分遠高於預期。" },
+      { id:"jpn_tun", status:"done", time:"6/22（一）06:00", group:"F", home:"日本 🇯🇵", away:"突尼西亞 🇹🇳", actual:"4 – 0", predicted:"2 – 0", hit:"partial", note:"方向對、零封命中，但日本進攻輸出更大。" },
+      { id:"esp_ksa", status:"done", time:"6/21（日）23:00", group:"H", home:"西班牙 🇪🇸", away:"沙烏地阿拉伯 🇸🇦", actual:"4 – 0", predicted:"3 – 0", hit:"partial", note:"方向正確，西班牙重新把節奏打回來。" },
+      { id:"bel_irn", status:"done", time:"6/22（一）03:00", group:"G", home:"比利時 🇧🇪", away:"伊朗 🇮🇷", actual:"0 – 0", predicted:"2 – 1", hit:"miss", note:"比利時沒能破解低位防守，成了悶平。" },
+      { id:"ury_cpv", status:"done", time:"6/22（一）05:00", group:"H", home:"烏拉圭 🇺🇾", away:"維德角 🇨🇻", actual:"2 – 2", predicted:"1 – 0", hit:"miss", note:"再一次被補時扳平，這場的劇本太戲劇化。" },
+      { id:"nzl_egy", status:"done", time:"6/22（一）09:00", group:"G", home:"紐西蘭 🇳🇿", away:"埃及 🇪🇬", actual:"1 – 3", predicted:"1 – 2", hit:"partial", note:"方向對，埃及勝也抓對，只是比分多一球。" },
     ];
 
-    let state = { g: '全部', md: '全部' };
-    const gButtons = ['全部','A','B','C','D','E','F','G','H','I','J','K','L'];
-    const mdButtons = ['全部','1','2','3'];
+    const upcoming = [
+      { id:"arg_aut", time:"6/23（二）01:00 台灣時間", venue:"達拉斯", group:"J", home:{name:"阿根廷 🇦🇷"}, away:{name:"奧地利 🇦🇹"}, probs:{home:58, draw:25, away:17}, ou:{line:2.5, lean:"over"}, prediction:"2 – 1", factors:[{icon:"📊", text:"阿根廷 58% / 平 25% / 奧地利 17%", highlight:true},{icon:"🏆", text:"兩隊 MD1 都拿到好開局，這場很像龍頭戰"},{icon:"⭐", text:"Messi 狀態很熱，進攻創造力仍是最強點"}], note:"阿根廷機率最高，但奧地利不會只守不攻，預計是有球的比賽。" , color:"#185FA5" },
+      { id:"fra_irq", time:"6/23（二）05:00 台灣時間", venue:"費城", group:"I", home:{name:"法國 🇫🇷"}, away:{name:"伊拉克 🇮🇶"}, probs:{home:86, draw:10, away:4}, ou:{line:2.5, lean:"over"}, prediction:"3 – 0", factors:[{icon:"📊", text:"法國 86% / 平 10% / 伊拉克 4%", highlight:true},{icon:"⭐", text:"Mbappé MD1 狀態正佳"},{icon:"📉", text:"伊拉克 MD1 1-4 慘敗，防線有明顯問題"}], note:"極端熱門方，若早早進球，比分有機會再被放大。", color:"#185FA5" },
+      { id:"nor_sen", time:"6/23（二）08:00 台灣時間", venue:"紐澤西", group:"I", home:{name:"挪威 🇳🇴"}, away:{name:"塞內加爾 🇸🇳"}, probs:{home:45, draw:28, away:27}, ou:{line:2.5, lean:"over"}, prediction:"2 – 1", factors:[{icon:"📊", text:"三方很接近：45 / 28 / 27", highlight:true},{icon:"⭐", text:"Haaland 是最關鍵的火力點"},{icon:"😤", text:"塞內加爾需要回神，強度不會低"}], note:"這是最接近的一場之一，預計會有雙方進球。", color:"#185FA5" },
+      { id:"jor_alg", time:"6/23（二）11:00 台灣時間", venue:"聖塔克拉拉", group:"J", home:{name:"約旦 🇯🇴"}, away:{name:"阿爾及利亞 🇩🇿"}, probs:{home:13, draw:24, away:63}, ou:{line:2.5, lean:"under"}, prediction:"0 – 2", factors:[{icon:"📊", text:"阿爾及利亞 63% / 平 24% / 約旦 13%", highlight:true},{icon:"🛡", text:"阿爾及利亞防守組織較完整"},{icon:"😤", text:"雙方 MD1 都想搶分，這是生死戰"}], note:"阿爾及利亞整體盤面較穩，約旦如果先失球會很難追。", color:"#D85A30" },
+      { id:"por_uzb", time:"6/24（三）01:00 台灣時間", venue:"休士頓", group:"K", home:{name:"葡萄牙 🇵🇹"}, away:{name:"烏茲別克 🇺🇿"}, probs:{home:75, draw:14, away:10}, ou:{line:2.5, lean:"over"}, prediction:"3 – 1", factors:[{icon:"📊", text:"葡萄牙 75% / 平 14% / 烏茲別克 10%", highlight:true},{icon:"😤", text:"葡萄牙 MD1 被逼平，這場急需正名"},{icon:"🌟", text:"烏茲別克有世界盃首球士氣，但防線不算穩"}], note:"葡萄牙是明顯熱門，不過對手也不是完全沒進攻能力。", color:"#185FA5" },
+      { id:"eng_gha", time:"6/24（三）04:00 台灣時間", venue:"波士頓", group:"L", home:{name:"英格蘭 🏴"}, away:{name:"迦納 🇬🇭"}, probs:{home:71, draw:19, away:10}, ou:{line:2.5, lean:"over"}, prediction:"2 – 1", factors:[{icon:"📊", text:"英格蘭 71% / 平 19% / 迦納 10%", highlight:true},{icon:"🏆", text:"雙方 MD1 都全勝，這場是 L 組龍頭戰"},{icon:"⭐", text:"Kane、Bellingham 狀態都很好"}], note:"英格蘭略優，但迦納的轉換速度會讓比賽不會太無聊。", color:"#185FA5" },
+      { id:"pan_cro", time:"6/24（三）07:00 台灣時間", venue:"多倫多", group:"L", home:{name:"巴拿馬 🇵🇦"}, away:{name:"克羅埃西亞 🇭🇷"}, probs:{home:16, draw:23, away:61}, ou:{line:2.5, lean:"over"}, prediction:"1 – 2", factors:[{icon:"📊", text:"克羅埃西亞 61% / 平 23% / 巴拿馬 16%", highlight:true},{icon:"😤", text:"兩隊 MD1 都輸球，這場是墊底生死戰"},{icon:"👴", text:"Modrić 仍是節奏核心"}], note:"克羅埃西亞比較穩，巴拿馬要偷分需要靠防守反擊。", color:"#D85A30" },
+      { id:"col_cod", time:"6/24（三）10:00 台灣時間", venue:"瓜達拉哈拉", group:"K", home:{name:"哥倫比亞 🇨🇴"}, away:{name:"剛果(金) 🇨🇩"}, probs:{home:60, draw:23, away:17}, ou:{line:2.5, lean:"under"}, prediction:"2 – 0", factors:[{icon:"📊", text:"哥倫比亞 60% 機率最高", highlight:true},{icon:"🏆", text:"K 組目前的盤面仍是哥倫比亞比較穩"},{icon:"🛡", text:"剛果金能守，但持續性進攻不算強"}], note:"哥倫比亞控場能力較佳，預期是低到中比分的勝利。", color:"#185FA5" },
+      { id:"bih_qat", time:"6/25（四）03:00 台灣時間", venue:"多倫多", group:"B", home:{name:"波赫 🇧🇦"}, away:{name:"卡達 🇶🇦"}, probs:{home:68, draw:19, away:14}, ou:{line:2.5, lean:"under"}, prediction:"2 – 0", factors:[{icon:"📊", text:"波赫 68% / 平 19% / 卡達 14%", highlight:true},{icon:"😤", text:"波赫是生死戰，這場輸不起"},{icon:"📉", text:"卡達上一輪 0-6 慘敗，士氣很低"}], note:"波赫整體機率明顯高，預期會是相對保守但可控的勝利。", color:"#185FA5" },
+      { id:"sui_can", time:"6/25（四）03:00 台灣時間", venue:"紐約", group:"B", home:{name:"瑞士 🇨🇭"}, away:{name:"加拿大 🇨🇦"}, probs:{home:39, draw:31, away:31}, ou:{line:2.5, lean:"under"}, prediction:"1 – 1", factors:[{icon:"📊", text:"三方最接近：39 / 31 / 31", highlight:true},{icon:"🏆", text:"加拿大若平局就很舒服"},{icon:"🤝", text:"瑞士想拼頭名，但不一定會冒太大風險"}], note:"這是最像五五波的一場，最合理的就是平局。", color:"#888" },
+      { id:"mar_hai", time:"6/25（四）06:00 台灣時間", venue:"休士頓", group:"C", home:{name:"摩洛哥 🇲🇦"}, away:{name:"海地 🇭🇹"}, probs:{home:80, draw:14, away:6}, ou:{line:2.5, lean:"over"}, prediction:"3 – 0", factors:[{icon:"📊", text:"摩洛哥 80% 壓倒性優勢", highlight:true},{icon:"🏆", text:"已晉級但想刷得失球差"},{icon:"📉", text:"海地兩戰 0 球 0 分"}], note:"摩洛哥是很明顯的強勢方，這場偏向大比分。", color:"#185FA5" },
+      { id:"sco_bra", time:"6/25（四）06:00 台灣時間", venue:"達拉斯", group:"C", home:{name:"蘇格蘭 🏴"}, away:{name:"巴西 🇧🇷"}, probs:{home:12, draw:19, away:69}, ou:{line:2.5, lean:"over"}, prediction:"0 – 2", factors:[{icon:"📊", text:"巴西 69% / 蘇格蘭 12%", highlight:true},{icon:"🔥", text:"巴西 MD2 找回狀態"},{icon:"😤", text:"蘇格蘭仍在搶分邊緣"}], note:"巴西略偏穩，蘇格蘭要偷分難度高。", color:"#D85A30" },
+      { id:"cze_mex", time:"6/25（四）09:00 台灣時間", venue:"墨西哥城", group:"A", home:{name:"捷克 🇨🇿"}, away:{name:"墨西哥 🇲🇽"}, probs:{home:26, draw:24, away:50}, ou:{line:2.5, lean:"under"}, prediction:"0 – 1", factors:[{icon:"📊", text:"墨西哥 50% 最多，但也不算高", highlight:true},{icon:"🏆", text:"墨西哥已經有晉級優勢"},{icon:"😤", text:"捷克必須搶分，會踢得很硬"}], note:"墨西哥小優，但這場應該不會太開。", color:"#D85A30" },
+      { id:"rsa_kor", time:"6/25（四）09:00 台灣時間", venue:"洛杉磯", group:"A", home:{name:"南非 🇿🇦"}, away:{name:"南韓 🇰🇷"}, probs:{home:16, draw:24, away:59}, ou:{line:2.5, lean:"under"}, prediction:"0 – 2", factors:[{icon:"📊", text:"南韓 59% / 南非 16%", highlight:true},{icon:"⭐", text:"Son Heung-min 是最穩定的出手點"},{icon:"📉", text:"南非整體進攻效率偏低"}], note:"南韓是明顯熱門方，預期是控場型勝利。", color:"#D85A30" },
+      { id:"ecu_ger", time:"6/26（五）04:00 台灣時間", venue:"洛杉磯", group:"E", home:{name:"厄瓜多 🇪🇨"}, away:{name:"德國 🇩🇪"}, probs:{home:26, draw:24, away:50}, ou:{line:2.5, lean:"over"}, prediction:"1 – 2", factors:[{icon:"📊", text:"德國 50% / 厄瓜多 26%", highlight:true},{icon:"🏆", text:"德國已確保頭名，但還想繼續刷表現"},{icon:"😤", text:"厄瓜多必須贏球才有機會晉級"}], note:"德國略高，但這場會比純保守賭注更開放。", color:"#D85A30" },
+      { id:"cuw_civ", time:"6/26（五）04:00 台灣時間", venue:"邁阿密", group:"E", home:{name:"庫拉索 🇨🇼"}, away:{name:"象牙海岸 🇨🇮"}, probs:{home:5, draw:11, away:85}, ou:{line:2.5, lean:"over"}, prediction:"0 – 3", factors:[{icon:"📊", text:"象牙海岸 85% 極端熱門", highlight:true},{icon:"📉", text:"庫拉索狀態持續低迷"},{icon:"🏆", text:"象牙海岸需要刷得失球差"}], note:"這場基本是單邊盤，象牙海岸大勝機率高。", color:"#D85A30" },
+      { id:"jpn_swe", time:"6/26（五）07:00 台灣時間", venue:"達拉斯", group:"F", home:{name:"日本 🇯🇵"}, away:{name:"瑞典 🇸🇪"}, probs:{home:48, draw:28, away:24}, ou:{line:2.5, lean:"over"}, prediction:"2 – 1", factors:[{icon:"📊", text:"日本 48% / 平 28% / 瑞典 24%", highlight:true},{icon:"⚡", text:"F 組本屆進球量很高"},{icon:"🏆", text:"兩隊都想拚頭名"}], note:"日本略高，但這場大概率會有進球互咬。", color:"#185FA5" },
+      { id:"tun_ned", time:"6/26（五）07:00 台灣時間", venue:"舊金山", group:"F", home:{name:"突尼西亞 🇹🇳"}, away:{name:"荷蘭 🇳🇱"}, probs:{home:4, draw:12, away:84}, ou:{line:2.5, lean:"over"}, prediction:"0 – 3", factors:[{icon:"📊", text:"荷蘭 84% / 突尼西亞 4%", highlight:true},{icon:"📉", text:"突尼西亞兩戰失 9 球"},{icon:"🔥", text:"荷蘭 MD2 5-1，大火力狀態"}], note:"荷蘭優勢非常大，這場偏向大比分。", color:"#D85A30" },
+      { id:"tur_usa", time:"6/26（五）10:00 台灣時間", venue:"紐約", group:"D", home:{name:"土耳其 🇹🇷"}, away:{name:"美國 🇺🇸"}, probs:{home:28, draw:24, away:48}, ou:{line:2.5, lean:"over"}, prediction:"1 – 2", factors:[{icon:"📊", text:"美國 48% / 土耳其 28%", highlight:true},{icon:"🏆", text:"美國已確保晉級，想鎖頭名"},{icon:"😤", text:"土耳其出局後反而無包袱"}], note:"美國略高，但土耳其無包袱，這場會有開放性。", color:"#D85A30" },
+      { id:"pry_aus", time:"6/26（五）10:00 台灣時間", venue:"洛杉磯", group:"D", home:{name:"巴拉圭 🇵🇾"}, away:{name:"澳洲 🇦🇺"}, probs:{home:34, draw:41, away:25}, ou:{line:2.5, lean:"under"}, prediction:"1 – 1", factors:[{icon:"📊", text:"平局 41% 最高", highlight:true},{icon:"🏆", text:"澳洲平局就很舒服"},{icon:"😤", text:"巴拉圭要贏才有晉級希望"}], note:"這場最像平局，雙方都會有顧忌。", color:"#888" },
+    ];
 
-    function renderFilters() {
-      const gWrap = document.getElementById('gFilters');
-      const mdWrap = document.getElementById('mdFilters');
-      gWrap.innerHTML = gButtons.map(x => `<button class="filter ${state.g===x?'active':''}" data-g="${x}">${x==='全部'?'全部分組':x+'組'}</button>`).join('');
-      mdWrap.innerHTML = mdButtons.map(x => `<button class="filter ${state.md===x?'active':''}" data-md="${x}">${x==='全部'?'全部輪次':'第'+x+'輪'}</button>`).join('');
-      gWrap.querySelectorAll('button').forEach(b => b.onclick = () => { state.g = b.dataset.g; renderFilters(); renderSchedule(); });
-      mdWrap.querySelectorAll('button').forEach(b => b.onclick = () => { state.md = b.dataset.md; renderFilters(); renderSchedule(); });
-    }
-
-    function renderSchedule() {
-      const out = document.getElementById('scheduleList');
-      const rows = schedule.filter(r => (state.g==='全部' || r.g===state.g) && (state.md==='全部' || String(r.md)===state.md));
-      const groups = {};
-      rows.forEach(r => {
-        const k = r.md === 3 ? '第3輪（同時開踢）' : `第${r.md}輪`;
-        (groups[k] ||= []).push(r);
-      });
-      out.innerHTML = Object.entries(groups).map(([label, items]) => {
-        return `<div><div class="md-head">${label}</div>` + items.map(r => `
-          <div class="schedule-row ${r.final ? 'final' : ''}">
-            <div class="schedule-time">${r.t}</div>
+    function TrackedCard(m){
+      const hitLabel = m.hit === 'exact' ? '✓ 完全命中' : m.hit === 'partial' ? '△ 部分命中' : '✗ 落空';
+      const hitClass = m.hit === 'exact' ? 'exact' : m.hit === 'partial' ? 'partial' : 'miss';
+      return `
+        <div class="match-card">
+          <div class="match-time">【${m.group}組】${m.time}</div>
+          <div class="match-top">
             <div>
-              <div class="schedule-match">【${r.g}組】${r.m}${r.score ? `<span class="score ${r.hit || ''}">${r.score}</span>` : ''}</div>
-              ${r.pred ? `<div class="schedule-pred">預測 ${r.pred}${r.score ? `｜${r.hit === 'exact' ? '✓ 完全命中' : r.hit === 'partial' ? '△ 部分命中' : '✗ 落空'}` : ''}</div>` : ''}
+              <div class="match-team">${m.home} vs ${m.away}</div>
+              <div class="small">預測：${m.predicted}</div>
             </div>
-            <div class="schedule-venue">${r.v}</div>
-          </div>`).join('') + `</div>`;
-      }).join('') || '<div class="small" style="padding:18px 0;text-align:center">無符合賽程</div>';
+            <div class="match-meta"><span class="score ${hitClass}">${hitLabel}</span></div>
+          </div>
+          <div class="scoreline">
+            <span class="score ${hitClass}">實際 ${m.actual}</span>
+            <span class="score">預測 ${m.predicted}</span>
+          </div>
+          <div class="note">${m.note}</div>
+        </div>`;
     }
 
-    document.getElementById('tabs').addEventListener('click', (e) => {
-      const b = e.target.closest('button[data-tab]');
-      if (!b) return;
-      document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === b));
+    function ProbBar(label, pct, cls=''){ 
+      return `
+        <div class="prob">
+          <span class="lbl">${label}</span>
+          <div class="bar"><div class="fill ${cls}" style="width:${pct}%"></div></div>
+          <span style="font-size:12px;font-weight:500;text-align:right">${pct}%</span>
+        </div>`;
+    }
+
+    function UpcomingCard(m){
+      return `
+        <div class="match-card">
+          <div class="match-time">【${m.group}組】${m.time} · ${m.venue}</div>
+          <div class="match-top">
+            <div>
+              <div class="match-team">${m.home.name} vs ${m.away.name}</div>
+              <div class="small">預測：${m.prediction}</div>
+            </div>
+            <div class="match-meta"><span class="score">${m.prediction}</span></div>
+          </div>
+          <div style="margin-top:8px;">${ProbBar(`${m.home.name.split(' ')[0]}勝`, m.probs.home, '')}${ProbBar('平局', m.probs.draw, 'g')}${ProbBar(`${m.away.name.split(' ')[0]}勝`, m.probs.away, 'a')}</div>
+          <div class="scoreline" style="margin-top:10px"><span class="score">O/U ${m.ou.line}</span><span class="score ${m.ou.lean === 'under' ? 'miss' : 'exact'}">${m.ou.lean === 'under' ? 'Under' : 'Over'} ✓</span></div>
+          <div class="factor-row">${m.factors.map(f => `<span class="factor ${f.highlight ? 'hot' : ''}">${f.icon} ${f.text}</span>`).join('')}</div>
+          <div class="note">${m.note}</div>
+        </div>`;
+    }
+
+    function renderTracked(){
+      document.getElementById('trackedList').innerHTML = tracked.map(TrackedCard).join('');
+    }
+
+    function renderUpcoming(){
+      document.getElementById('upcomingList').innerHTML = upcoming.map(UpcomingCard).join('');
+    }
+
+    const tabs = document.getElementById('tabs');
+    tabs.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-tab]');
+      if(!btn) return;
+      document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x === btn));
       document.querySelectorAll('.section').forEach(x => x.classList.remove('active'));
-      document.getElementById(b.dataset.tab).classList.add('active');
-      if (b.dataset.tab === 'schedule') { renderFilters(); renderSchedule(); }
+      document.getElementById(btn.dataset.tab).classList.add('active');
     });
 
-    renderFilters();
-    renderSchedule();
+    renderTracked();
+    renderUpcoming();
   </script>
 </body>
 </html>
